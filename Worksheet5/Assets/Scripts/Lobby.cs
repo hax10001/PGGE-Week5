@@ -26,7 +26,6 @@ public class Lobby : MonoBehaviour
   {
     TextConnectionStatus.gameObject.SetActive(true);
 
-    PhotonNetwork.NickName = InputName.text;
     // now we will make a connection to the server using
     // PUN callbacks.
     Debug.Log("Hello " + PhotonNetwork.NickName);

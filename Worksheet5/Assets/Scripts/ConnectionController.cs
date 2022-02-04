@@ -35,15 +35,15 @@ namespace PGGE.MultiPlayer
       ButtonJoinRoom.onClick.AddListener(
         delegate
         {
-          Connect();
+          OnClick_JoinButton();
         });
     }
 
-    public void Connect()
+    public void OnClick_JoinButton()
     {
       PhotonNetwork.NickName = InputName.text;
 
-      ButtonJoinRoom.gameObject.SetActive(false);
+      InputName.gameObject.SetActive(false);
       ButtonJoinRoom.gameObject.SetActive(false);
       TextConnectionStatus.gameObject.SetActive(true);
 
@@ -70,6 +70,7 @@ namespace PGGE.MultiPlayer
           "No random room available" +
           ", so we create one by Calling: " +
           "PhotonNetwork.CreateRoom");
+      //Debug.Log("No room. You cannot play!");
 
       // Failed to join a random room.
       // This may happen if no room exists or 
@@ -102,8 +103,12 @@ namespace PGGE.MultiPlayer
 
         //SceneManager.LoadScene("MultiPlayerScene1");
 
-        // Here we use Photon's mechanism of loading a scene
-        // instead of using Unity's method.
+        //// Here we use Photon's mechanism of loading a scene
+        //// instead of using Unity's method.
+        //Dictionary<string, string> rooms = new Dictionary<string, string>();
+        //rooms.Add("Romato", "SingaporeSuntecMap");
+        //rooms.Add("Tsang", "MarinaBaySandsMap");
+
         PhotonNetwork.LoadLevel("MultiPlayerScene1");
       }
     }
