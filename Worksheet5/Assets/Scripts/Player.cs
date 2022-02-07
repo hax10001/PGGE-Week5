@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using PGGE.Patterns;
+using Photon.Pun;
 
 public class Player : MonoBehaviour
 {
@@ -38,6 +39,13 @@ public class Player : MonoBehaviour
   public int[] RoundsPerSecond = new int[3];
   bool[] mFiring = new bool[3];
 
+  /// <summary>
+  /// We are now going to port our player script to 
+  /// be multiplayer compliant.
+  /// We make the following changes.
+  /// </summary>
+
+  private PhotonView mPhotonView;
 
   // Start is called before the first frame update
   void Start()
@@ -46,48 +54,101 @@ public class Player : MonoBehaviour
     mFsm.Add(new PlayerState_ATTACK(this));
     mFsm.Add(new PlayerState_RELOAD(this));
     mFsm.SetCurrentState((int)PlayerStateType.MOVEMENT);
+
+    // cache the PhotoView component.
+    mPhotonView = gameObject.GetComponent<PhotonView>();
   }
 
   void Update()
   {
-    mFsm.Update();
-    Aim();
-
-    // For Student ----------------------------------------------------//
-    // Implement the logic of button clicks for shooting. 
-    //-----------------------------------------------------------------//
-
-    if (Input.GetButton("Fire1"))
+    if (mPhotonView == null)
     {
-      mAttackButtons[0] = true;
-      mAttackButtons[1] = false;
-      mAttackButtons[2] = false;
+
+      mFsm.Update();
+      Aim();
+
+      // For Student ----------------------------------------------------//
+      // Implement the logic of button clicks for shooting. 
+      //-----------------------------------------------------------------//
+
+      if (Input.GetButton("Fire1"))
+      {
+        mAttackButtons[0] = true;
+        mAttackButtons[1] = false;
+        mAttackButtons[2] = false;
+      }
+      else
+      {
+        mAttackButtons[0] = false;
+      }
+
+      if (Input.GetButton("Fire2"))
+      {
+        mAttackButtons[0] = false;
+        mAttackButtons[1] = true;
+        mAttackButtons[2] = false;
+      }
+      else
+      {
+        mAttackButtons[1] = false;
+      }
+
+      if (Input.GetButton("Fire3"))
+      {
+        mAttackButtons[0] = false;
+        mAttackButtons[1] = false;
+        mAttackButtons[2] = true;
+      }
+      else
+      {
+        mAttackButtons[2] = false;
+      }
+      return;
     }
     else
     {
-      mAttackButtons[0] = false;
-    }
+      // Chnages made to port this script to be multiplayer compliant.
+      if (!mPhotonView.IsMine) return;
 
-    if (Input.GetButton("Fire2"))
-    {
-      mAttackButtons[0] = false;
-      mAttackButtons[1] = true;
-      mAttackButtons[2] = false;
-    }
-    else
-    {
-      mAttackButtons[1] = false;
-    }
+      mFsm.Update();
+      Aim();
 
-    if (Input.GetButton("Fire3"))
-    {
-      mAttackButtons[0] = false;
-      mAttackButtons[1] = false;
-      mAttackButtons[2] = true;
-    }
-    else
-    {
-      mAttackButtons[2] = false;
+      // For Student ----------------------------------------------------//
+      // Implement the logic of button clicks for shooting. 
+      //-----------------------------------------------------------------//
+
+      if (Input.GetButton("Fire1"))
+      {
+        mAttackButtons[0] = true;
+        mAttackButtons[1] = false;
+        mAttackButtons[2] = false;
+      }
+      else
+      {
+        mAttackButtons[0] = false;
+      }
+
+      if (Input.GetButton("Fire2"))
+      {
+        mAttackButtons[0] = false;
+        mAttackButtons[1] = true;
+        mAttackButtons[2] = false;
+      }
+      else
+      {
+        mAttackButtons[1] = false;
+      }
+
+      if (Input.GetButton("Fire3"))
+      {
+        mAttackButtons[0] = false;
+        mAttackButtons[1] = false;
+        mAttackButtons[2] = true;
+      }
+      else
+      {
+        mAttackButtons[2] = false;
+      }
     }
   }
 
