@@ -59,96 +59,62 @@ public class Player : MonoBehaviour
     mPhotonView = gameObject.GetComponent<PhotonView>();
   }
 
+  void UpdateInternal()
+  {
+
+    mFsm.Update();
+    Aim();
+
+    // For Student ----------------------------------------------------//
+    // Implement the logic of button clicks for shooting. 
+    //-----------------------------------------------------------------//
+
+    if (Input.GetButton("Fire1"))
+    {
+      mAttackButtons[0] = true;
+      mAttackButtons[1] = false;
+      mAttackButtons[2] = false;
+    }
+    else
+    {
+      mAttackButtons[0] = false;
+    }
+
+    if (Input.GetButton("Fire2"))
+    {
+      mAttackButtons[0] = false;
+      mAttackButtons[1] = true;
+      mAttackButtons[2] = false;
+    }
+    else
+    {
+      mAttackButtons[1] = false;
+    }
+
+    if (Input.GetButton("Fire3"))
+    {
+      mAttackButtons[0] = false;
+      mAttackButtons[1] = false;
+      mAttackButtons[2] = true;
+    }
+    else
+    {
+      mAttackButtons[2] = false;
+    }
+  }
+
   void Update()
   {
     if (mPhotonView == null)
     {
-
-      mFsm.Update();
-      Aim();
-
-      // For Student ----------------------------------------------------//
-      // Implement the logic of button clicks for shooting. 
-      //-----------------------------------------------------------------//
-
-      if (Input.GetButton("Fire1"))
-      {
-        mAttackButtons[0] = true;
-        mAttackButtons[1] = false;
-        mAttackButtons[2] = false;
-      }
-      else
-      {
-        mAttackButtons[0] = false;
-      }
-
-      if (Input.GetButton("Fire2"))
-      {
-        mAttackButtons[0] = false;
-        mAttackButtons[1] = true;
-        mAttackButtons[2] = false;
-      }
-      else
-      {
-        mAttackButtons[1] = false;
-      }
-
-      if (Input.GetButton("Fire3"))
-      {
-        mAttackButtons[0] = false;
-        mAttackButtons[1] = false;
-        mAttackButtons[2] = true;
-      }
-      else
-      {
-        mAttackButtons[2] = false;
-      }
+      UpdateInternal();
       return;
     }
     else
     {
       // Chnages made to port this script to be multiplayer compliant.
       if (!mPhotonView.IsMine) return;
-
-      mFsm.Update();
-      Aim();
-
-      // For Student ----------------------------------------------------//
-      // Implement the logic of button clicks for shooting. 
-      //-----------------------------------------------------------------//
-
-      if (Input.GetButton("Fire1"))
-      {
-        mAttackButtons[0] = true;
-        mAttackButtons[1] = false;
-        mAttackButtons[2] = false;
-      }
-      else
-      {
-        mAttackButtons[0] = false;
-      }
-
-      if (Input.GetButton("Fire2"))
-      {
-        mAttackButtons[0] = false;
-        mAttackButtons[1] = true;
-        mAttackButtons[2] = false;
-      }
-      else
-      {
-        mAttackButtons[1] = false;
-      }
-
-      if (Input.GetButton("Fire3"))
-      {
-        mAttackButtons[0] = false;
-        mAttackButtons[1] = false;
-        mAttackButtons[2] = true;
-      }
-      else
-      {
-        mAttackButtons[2] = false;
-      }
+      UpdateInternal();
     }
   }
 
