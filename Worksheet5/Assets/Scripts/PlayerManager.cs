@@ -2,8 +2,9 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
   // We will instantiate the prefab using the name
   // of the prefab.
@@ -38,5 +39,15 @@ public class PlayerManager : MonoBehaviour
     mThirdPersonCamera.mPlayer = mPlayerGameObject.transform;
     mThirdPersonCamera.mDamping = 5.0f;
     mThirdPersonCamera.mCameraType = CameraType.Follow_Track_Pos_Rot;
+  }
+  public void OnClick_LeaveRoom()
+  {
+    Debug.LogFormat("LeaveRoom");
+    PhotonNetwork.LeaveRoom();
+  }
+  public override void OnLeftRoom()
+  {
+    Debug.LogFormat("OnLeftRoom()");
+    SceneManager.LoadScene("Menu");
   }
 }

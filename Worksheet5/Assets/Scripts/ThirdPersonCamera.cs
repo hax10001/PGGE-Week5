@@ -83,6 +83,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
   void LateUpdate()
   {
+    if (mPlayer == null) return;
     mThirdPersonCamera.Update();
   }
 }
