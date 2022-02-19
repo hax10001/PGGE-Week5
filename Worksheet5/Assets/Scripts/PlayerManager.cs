@@ -1,6 +1,8 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +22,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
   // We will create out third-person camera from
   // this script and bind it to the camera at runtime.
   private ThirdPersonCamera mThirdPersonCamera;
+
+   public AudioSource source;
+   public AudioClip clip;
 
   private void Start()
   {
@@ -45,9 +50,17 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     Debug.LogFormat("LeaveRoom");
     PhotonNetwork.LeaveRoom();
   }
-  public override void OnLeftRoom()
+  public async override void OnLeftRoom()
   {
     Debug.LogFormat("OnLeftRoom()");
-    SceneManager.LoadScene("Menu");
+
+    source.PlayOneShot(clip); // Play the audio
+
+    while(source.isPlaying) // Wait for the audio to stop playing
+    {
+        await Task.Yield();
+    }
+
+    SceneManager.LoadScene("Menu"); // Load the scene
   }
 }

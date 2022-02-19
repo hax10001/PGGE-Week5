@@ -75,23 +75,41 @@ public class PlayerState_MOVEMENT : PlayerState
 
         for (int i = 0; i < mPlayer.mAttackButtons.Length; ++i)
         {
-            if (mPlayer.mAttackButtons[i])
-            {
-                if (mPlayer.mBulletsInMagazine > 0)
-                {
-                    PlayerState_ATTACK attack =
-                  (PlayerState_ATTACK)mFsm.GetState(
-                            (int)PlayerStateType.ATTACK);
+            // Refactor 2
 
-                    attack.AttackID = i;
-                    mPlayer.mFsm.SetCurrentState(
-                        (int)PlayerStateType.ATTACK);
-                }
-                else
-                {
-                    Debug.Log("No more ammo left");
-                }
-            }
+            // New Code
+
+            if (!mPlayer.mAttackButtons[i]) return;
+
+            if (mPlayer.mBulletsInMagazine < 0) return;
+
+            PlayerState_ATTACK attack =
+            (PlayerState_ATTACK)mFsm.GetState(
+            (int)PlayerStateType.ATTACK);
+
+            attack.AttackID = i;
+            mPlayer.mFsm.SetCurrentState(
+            (int)PlayerStateType.ATTACK);
+
+            // Old Code
+
+            //if (mPlayer.mAttackButtons[i])
+            //{
+            //    if (mPlayer.mBulletsInMagazine > 0)
+            //    {
+            //        PlayerState_ATTACK attack =
+            //      (PlayerState_ATTACK)mFsm.GetState(
+            //                (int)PlayerStateType.ATTACK);
+
+            //        attack.AttackID = i;
+            //        mPlayer.mFsm.SetCurrentState(
+            //            (int)PlayerStateType.ATTACK);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("No more ammo left");
+            //    }
+            //}
         }
     }
 
@@ -170,6 +188,7 @@ public class PlayerState_ATTACK : PlayerState
         
         // For tutor - start ---------------------------------------------//
         Debug.Log("Ammo count: " + mPlayer.mAmunitionCount + ", In Magazine: " + mPlayer.mBulletsInMagazine);
+
         if (mPlayer.mBulletsInMagazine == 0 && mPlayer.mAmunitionCount > 0)
         {
             mPlayer.mFsm.SetCurrentState((int)PlayerStateType.RELOAD);
@@ -186,7 +205,7 @@ public class PlayerState_ATTACK : PlayerState
         if (mPlayer.mAttackButtons[mAttackID])
         {
             mPlayer.mAnimator.SetBool(mAttackName, true);
-            mPlayer.Fire(AttackID);
+            //mPlayer.Fire(AttackID);
         }
         else
         {

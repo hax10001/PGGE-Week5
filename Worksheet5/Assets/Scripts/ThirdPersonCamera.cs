@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using PGGE;
+using Photon.Pun;
 
 public enum CameraType
 {

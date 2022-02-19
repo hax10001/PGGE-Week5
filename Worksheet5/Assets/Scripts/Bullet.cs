@@ -10,9 +10,11 @@ public class Bullet : MonoBehaviour
         StartCoroutine(Coroutine_Destroy(10.0f));
     }
 
-    void Update()
-    {
-    }
+    // Refactor #3
+
+    //void Update()
+    //{
+    //}
 
     IEnumerator Coroutine_Destroy(float duration)
     {
@@ -23,11 +25,22 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         IDamageable obj = collision.gameObject.GetComponent<IDamageable>();
-        if (obj != null)
-        {
-            obj.TakeDamage();
-        }
 
-        StartCoroutine(Coroutine_Destroy(0.1f));
+        // Refactor #1
+        
+        // New Code
+
+        if (obj != null) obj.TakeDamage();
+
+        StartCoroutine(Coroutine_Destroy(0.1f)); 
+
+        // Old Code
+
+        //if (obj != null)
+        //{
+        //    obj.TakeDamage();
+        //}
+
+        //StartCoroutine(Coroutine_Destroy(0.1f));
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class Menu : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Menu : MonoBehaviour
   Button ButtonSinglePlayer;
   [SerializeField]
   Button ButtonMultiPlayer;
+
+   public AudioClip[] clips;
+   public AudioSource source;
 
   private void Start()
   {
@@ -29,14 +33,30 @@ public class Menu : MonoBehaviour
       });
   }
 
-  public void OnClick_SinglePlayer()
+  public async void OnClick_SinglePlayer()
   {
     Debug.Log("Loading Single Player");
-    SceneManager.LoadScene("SinglePlayer");
+
+    source.PlayOneShot(clips[0]); // Play the audio
+
+    while (source.isPlaying) // Wait for the audio to stop playing
+    {
+        await Task.Yield();
+    }
+
+    SceneManager.LoadScene("SinglePlayer"); // Load the scene
   }
-  public void OnClick_MultiPlayer()
+  public async void OnClick_MultiPlayer()
   {
     Debug.Log("Loading Multiplayer");
-    SceneManager.LoadScene("MultiPlayerLauncher");
+
+    source.PlayOneShot(clips[1]); // Play the audio
+
+    while (source.isPlaying) // Wait for the audio to stop playing
+    {
+        await Task.Yield();
+    }
+
+    SceneManager.LoadScene("MultiPlayerLauncher"); // Load the scene
   }
 }

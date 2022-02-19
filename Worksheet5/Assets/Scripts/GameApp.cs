@@ -17,16 +17,26 @@ public class GameApp : Singleton<GameApp>
   public void PauseGame(bool flag)
   {
     mPause = flag;
-    //mOnPause?.Invoke(GamePaused);
-    if (mPause)
-    {
-      Time.timeScale = 0;
+        //mOnPause?.Invoke(GamePaused);
+
+        // Refactor #1
+
+        // New Code
+
+        if (mPause) Time.timeScale = 0;
+        else Time.timeScale = 1;
+
+        // Old Code
+
+        //if (mPause)
+        //{
+        //  Time.timeScale = 0;
+        //}
+        //else
+        //{
+        //  Time.timeScale = 1;
+        //}
     }
-    else
-    {
-      Time.timeScale = 1;
-    }
-  }
 
   //public bool GamePaused
   //{
